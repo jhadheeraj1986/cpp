@@ -15,7 +15,6 @@ int main()
 {
    /*
     Create a client socket
-    Headers: #include <sys/types.h>  #include <sys/socket.h>
     */
    int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
    if (-1 == clientSocket)
@@ -26,7 +25,7 @@ int main()
 
     /*
         Create a sockaddr_in structure object to connect to server
-TODO:   "127.0.0.1" -   ?
+        "127.0.0.1" -   is the loopback address (also known as localhost).
     */
    sockaddr_in clientSockAdd;
    clientSockAdd.sin_family = AF_INET;
@@ -35,7 +34,6 @@ TODO:   "127.0.0.1" -   ?
 
     /*
         Connect to server
-        Headers: #include <sys/types.h>  #include <sys/socket.h>
     */
    int ret = connect(clientSocket,(sockaddr*)&clientSockAdd, sizeof(clientSockAdd));
    if(-1 == ret){
@@ -51,7 +49,6 @@ TODO:   "127.0.0.1" -   ?
         getline(cin, clientInput);
 
         //send a message to server
-        //Headers: #include <sys/types.h> #include <sys/socket.h>
         int retSend = send(clientSocket, clientInput.c_str(), clientInput.size()+1, 0);
         if(-1 == retSend){
             cerr<<clientLog+"Failed to send message to server."<<endl;
@@ -65,7 +62,7 @@ TODO:   "127.0.0.1" -   ?
         }
         else
         {
-            //		Display response
+            //Display response
             cout << "SERVER> " << string(buffer, SizeOfResponseRecvFromServer) << endl;
         }
     }while(1);

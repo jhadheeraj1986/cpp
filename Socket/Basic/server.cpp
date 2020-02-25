@@ -15,9 +15,11 @@ int main()
 {
     /*  
         Lets create  a socket
-        AF_INET     -   IPV4(for Internet Protocol v4 addresses)    Ref: https://docs.microsoft.com/en-us/windows-hardware/drivers/network/af-inet
+        AF_INET     -   The AF_INET address family is the address family for IPv4.
+        AF_INET6    -   The AF_INET6 address family is the address family for IPv6.
         SOCK_STREAM -   for TCP Socket 
         SOCK_DGRAM  -   UDP socket
+        Headers     -   #include <sys/types.h>  #include <sys/socket.h>
      */
     int serverSocket = socket(AF_INET,SOCK_STREAM,0);
     if(-1 == serverSocket){
@@ -27,12 +29,11 @@ int main()
 
     /*
         Bind the ip address and port to a socket.
-TODO:   sockaddr_*      -   ?
-TODO:   sockaddr_in     -   ?
-TODO:   sockaddr_in6    -   ?
-TODO:   htons()         -   ?
-TODO:   inet_pton()     -   ?
-TODO:   "0.0.0.0"       -   ?
+        sockaddr_in     -   The SOCKADDR_IN structure specifies a transport address and port for the AF_INET address family.  
+        sockaddr_in6    -   The SOCKADDR_IN6 structure specifies a transport address and port for the AF_INET6 address family 
+        htons()         -   The htons function converts a u_short from host to TCP/IP network byte order (which is big-endian)
+        inet_pton()     -   convert IPv4 and IPv6 addresses from text to binary form.
+        "0.0.0.0"       -   all IPv4 addresses on the local machine.
     */
     sockaddr_in serverSocketAdd;
     serverSocketAdd.sin_family = AF_INET;
@@ -42,7 +43,7 @@ TODO:   "0.0.0.0"       -   ?
     bind(serverSocket, (sockaddr*)&serverSocketAdd, sizeof(serverSocketAdd));
 
     /*
-        Tell Winsock the socket is for listening
+        Tell the socket to start listening
         SOMAXCONN - ?
     */
     listen(serverSocket, SOMAXCONN);
@@ -51,13 +52,10 @@ TODO:   "0.0.0.0"       -   ?
         Waiting for client connections
         Header - ?
     */
-   sockaddr_in clientSockerAdd;
-   socklen_t clientSockerLen = sizeof(clientSockerAdd);
+   sockaddr_in clientSocketAdd;
+   socklen_t clientSocketLen = sizeof(clientSocketAdd);
 
-   int clientSocket = accept(serverSocket, (sockaddr*)&clientSockerAdd, &clientSockerLen);
-
-   // Close serverSocket socket
-    close(serverSocket);
+   int clientSocket = accept(serverSocket, (sockaddr*)&clientSocketAdd, &clientSocketLen);
 
     /*
         Receive message from client and sent it back to client as it is.
@@ -86,7 +84,10 @@ TODO:   "0.0.0.0"       -   ?
            }
        }
    }
-   /*Close client socket*/
+
+    // Close serverSocket socket
+    close(serverSocket);
+    /*Close client socket*/
     close(clientSocket);
     return 0;
 }
