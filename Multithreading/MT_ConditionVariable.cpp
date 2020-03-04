@@ -18,18 +18,18 @@ int fun1(){
 		count++;
 		unique_lock<mutex> lock(mutObj);
 		que.push_back(count);
-		if(count == 50){
-		 	std::this_thread::sleep_for(std::chrono::seconds(5));}
-		CondVar.notify_all();
+		// if(count == 50){
+		//  	std::this_thread::sleep_for(std::chrono::seconds(5));}
+		// CondVar.notify_all();
 	}
 }
 
 int fun2(){
 	unique_lock<mutex> lock1(mutObj);
 	while(count < 100){
-		if((que.size() == 0)){
-			CondVar.wait(lock1);
-		}
+		// if((que.size() == 0)){
+		// 	CondVar.wait(lock1);
+		// }
 		cout<<"fun2: que size:  "<< que.size()<<endl;
 		for(auto itr : que){
 			if(que.size() > 0){
